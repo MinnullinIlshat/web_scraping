@@ -17,7 +17,6 @@ class ContactSearcher(BeautifulSoup):
         # собирает emails
         pass
 
-internal_links = []
 
 def get_internal_links(url, l=None):
     # проходит по всем страницам сайта и собираеет внутренние ссылки
@@ -29,16 +28,15 @@ def get_internal_links(url, l=None):
     bs = BeautifulSoup(html, 'html.parser')
 
     home_url = urlsplit(url)._replace(path='', query='', fragment='').geturl()
-    for link in bs.find_all('a', href=re.compile(r'^(/)((?!@).)*[^(jpg)(gif)(png)(jpeg)]$')):
+
+    href1 = re.compile(r'^(/)((?!@).)*(?<!\.\w{3})$')
+    href2 = re.compile(rf'^{home_url}.*(?<!\.\w{3})$')
+
+    for link in bs.find_all('a', {'href': {href1, href2}}):
         print('1 href', link.attrs['href'])
         link = urljoin(home_url, link.attrs['href'])
         if link not in internal_links:
             print('1 link', link)
             get_internal_links(link, internal_links)
 
-    for link in bs.find_all('a', href=re.compile(rf'^{home_url}.*[^(jpg)(gif)(png)(jpeg)]$')):
-        print('2 href', link.attrs['href'])
-        if (link:= urljoin(home_url, link.attrs['href'])) not in internal_links:
-            print('2', link)
-            get_internal_links(link, internal_links)
     return internal_links if not l else None
