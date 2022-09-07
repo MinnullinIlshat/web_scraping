@@ -1,10 +1,16 @@
 from urllib.request import urlopen
-from urllib.parse import urlparse, urlsplit, urljoin
+from urllib.parse import urlsplit, urljoin
 from bs4 import BeautifulSoup 
 import re 
 
-class ContactSearcher(BeautifulSoup):
-    # создает объект bs и ищет все контакты на странице
+class Contacts:
+    def __init__(self, home_url):
+        self.home_url = home_url 
+        self.phone_numbers = []
+        self.social_links = []
+        self.emails = []
+        self.internal_links = get_internal_links(home_url)
+
     def get_phone_numbers(self):
         # собирает все номера телефонов
         pass
@@ -42,6 +48,10 @@ def get_home_url(url):
     return urlsplit(url)._replace(path='', query='', fragment='').geturl()
 
 
+def clean_internal_links(d, url):
+    '''убирает ссылки имеющие другой hostname(попали по ошибке)'''
+    return {key: val for key, val in d.items() if key.startswith(f'{url}')}
+
 def get_internal_links(url, l=None):
     ''' собирает все внутренние ссылки сайта в словарь и возвращает его
         ключ словаря - ссылка, значение - объект BeautifulSoup >> {url:bs}'''
@@ -50,7 +60,7 @@ def get_internal_links(url, l=None):
         return internal_links
     if not (bs:= get_bsoup(url)):                 # если bs не получен - останавливаем функцию
         print(f'URL {url} can\'t be checked.')
-        internal_links[url] = None
+        internal_links[url] = None                # не обращаемся повторно к недоступным страницам
         return None
     internal_links[url] = bs                      # если bs получен, добавляем url и bs в словврь {url:bs}
 
@@ -63,4 +73,4 @@ def get_internal_links(url, l=None):
         if link not in internal_links and not is_link_to_file(link):
             get_internal_links(link, internal_links)
 
-    return internal_links if not l else None
+    return clean_internal_links(internal_links, url) if not l else None
