@@ -40,3 +40,51 @@ def get_internal_links(url, l=None):
             get_internal_links(link, internal_links)
 
     return internal_links if not l else None
+
+
+'''
+from base64 import urlsafe_b64decode
+from urllib.request import urlopen
+from urllib.parse import urlsplit, urljoin
+from bs4 import BeautifulSoup 
+import re 
+
+
+def get_bsoup(url):
+    try:
+        html = urlopen(url)
+        return BeautifulSoup(html, 'html.parser')
+    except:
+        print(f'Any error with {url}.')
+        return None
+
+def get_internal_links(url, l=None):
+    # проходит по всем страницам сайта и собираеет внутренние ссылки
+    internal_links = dict() if not l else l
+    if len(internal_links) > 50:                 # не собираем слишком много страниц, экономим время
+        return internal_links
+    bs = get_bsoup(url)
+    if not bs:                                   # если bs не получен - останавливаем функцию
+        print(f'URL {url} can\'t be checked.')
+        return None
+    internal_links[url] = bs                     # если bs получен, добавляем url и bs в словврь {url:bs}
+
+    home_url = urlsplit(url)._replace(path='', query='', fragment='').geturl()
+    href1 = re.compile(r'^(/)((?!@).)*(?<!\.\w{3})$')
+    href2 = re.compile(rf'^{home_url}.*(?<!\.\w{3})$')
+
+    for link in bs.find_all('a', {'href': {href1, href2}}):
+        print('\nHREF:', link.attrs['href'])
+        link = urljoin(home_url, link.attrs['href'])
+        if link not in internal_links:
+            print('link', link)
+            get_internal_links(link, internal_links)
+
+    return internal_links if not l else None
+
+int_links = get_internal_links('https://autlet.ru/')
+
+for key in int_links.keys():
+    print(key)
+
+print(len(int_links))'''
