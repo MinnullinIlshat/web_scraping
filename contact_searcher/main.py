@@ -10,17 +10,21 @@ class Contacts:
         self.social_links = []
         self.emails = []
         self.internal_links = get_internal_links(home_url)
-
-    def get_phone_numbers(self):
-        # собирает все номера телефонов
+    
+    def update_data(self):
+        '''обновляет конактные данные'''
         pass
 
-    def get_social_links(self):
-        # собирает ссылки на соц сети 
+    def get_phone_numbers(self, bs):
+        '''собирает все номера телефонов'''
+        pass
+
+    def get_social_links(self, bs):
+        '''собирает ссылки на соц. сети'''
         pass 
 
-    def get_emails(self):
-        # собирает emails
+    def get_emails(self, bs):
+        '''собирает почты'''
         pass
 
 
@@ -50,7 +54,7 @@ def get_home_url(url):
 
 def clean_internal_links(d, url):
     '''убирает ссылки имеющие другой hostname(попали по ошибке)'''
-    return {key: val for key, val in d.items() if key.startswith(f'{url}')}
+    return {key: val for key, val in d.items() if key.startswith(f'{url}') and val}
 
 def get_internal_links(url, l=None):
     ''' собирает все внутренние ссылки сайта в словарь и возвращает его
@@ -62,6 +66,7 @@ def get_internal_links(url, l=None):
         print(f'URL {url} can\'t be checked.')
         internal_links[url] = None                # не обращаемся повторно к недоступным страницам
         return None
+    print(url)
     internal_links[url] = bs                      # если bs получен, добавляем url и bs в словврь {url:bs}
 
     home_url = get_home_url(url) # format: https://site.com/
@@ -74,3 +79,11 @@ def get_internal_links(url, l=None):
             get_internal_links(link, internal_links)
 
     return clean_internal_links(internal_links, url) if not l else None
+
+
+if __name__ == '__main__':
+    int_links = get_internal_links('')
+    if int_links:
+        for link in int_links.keys():
+            print(link)
+        print(len(int_links))
