@@ -7,16 +7,16 @@ class ArticleSpider(CrawlSpider):
     start_urls = ['https://en.wikipedia.org/wiki/'
         'Benevolent_dictator_for_life']
     rules = [
-        Rule(LinkExtractor(allow='^(/wiki/)((!?!:).)*$'),
+        Rule(LinkExtractor(allow=r'^(/wiki/)((?!:).)*$'),
             callback='parse_items', follow=True,
             cb_kwargs={'is_article': True}),
-        Rule(LinkExtractor(allow='.*'), callback='parse_items',
+        Rule(LinkExtractor(allow=r'.*'), callback='parse_items',
             cb_kwargs={'is_article': False})
     ]
 
     def parse_items(self, response, is_article):
         print(response.url)
-        title = [response.css('h1::text').get()]
+        title = response.css('h1::text').get()
         if is_article:
             url = response.url 
             text = response.xpath('//div[@id="mw-content-text"]'
