@@ -4,13 +4,13 @@ from bs4 import BeautifulSoup
 import psycopg2 
 from random import shuffle 
 
-conn = psycopg2.connect('dbname=scraping user=ilshat')
+conn = psycopg2.connect('dbname=wikipedia user=ilshat')
 cur = conn.cursor()
 
 def insert_page_if_not_exists(url):
-    cur.execute(f'SELECT * FROM pages WHERE url = {url}')
+    cur.execute(f'SELECT * FROM pages WHERE url = \'{url}\'')
     if cur.rowcount == 0:
-        cur.execute(f'INSERT INTO pages (url) VALUES ({url})')
+        cur.execute(f'INSERT INTO pages (url) VALUES (\'{url}\')')
         conn.commit() 
         return cur.lastrowid 
     else: 
