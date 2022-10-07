@@ -9,9 +9,9 @@ from itemadapter import ItemAdapter
 from inshi.items import Product
 
 
-class ProductPipeline:
+class InshiPipeline:
     def process_item(self, product: Product, spider):
-        product.description = self.clean_description(product.description)
+        product['description'] = self.clean_description(product['description'])
         return product
 
     def clean_description(self, description):
