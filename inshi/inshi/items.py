@@ -13,3 +13,5 @@ class Product(scrapy.Item):
     fasovka = scrapy.Field()
     price = scrapy.Field()
     description = scrapy.Field()
+    url = scrapy.Field()
+    file_urls = scrapy.Field()
