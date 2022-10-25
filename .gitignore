@@ -9,3 +9,5 @@ optof_price.csv
 inaugurationSpeech.txt
 *.csv
 files
+phantomjs*
+geckodriver*
