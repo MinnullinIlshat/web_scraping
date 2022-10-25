@@ -46,10 +46,12 @@ class Category:
         for i in range(1, int(last)):
             pages.append(f'{link}/{i}')
         return pages
+
+    def get_product_urls(self) -> list[str]:
+        product_urls = [] 
+        for page in self.pages:
+            pass
+
 #########################################################################
 
 url = 'https://chudodey.com/catalog/parfyumeriya/filters/filter10/filter_type/SG/filters/filter10/filter_name/%D0%B2%20%D0%BD%D0%B0%D0%BB%D0%B8%D1%87%D0%B8%D0%B8%20%D0%B8%20%D0%BF%D0%BE%D0%B4%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7/filters/filter10/values/sort/field_name/title/sort/sort_type/%D0%B2%D0%BE%D0%B7%D1%80%D0%B0%D1%81%D1%82%D0%B0%D0%BD%D0%B8%D0%B5/pager/page_number/0'
-
-for page in get_pages(html_obj, url):
-    print(page[:20] + page[-20:])
-    print()
