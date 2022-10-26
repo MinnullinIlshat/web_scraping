@@ -1,3 +1,8 @@
+"""
+ЧЕРНОВИК! ДЛЯ ПРОВЕРКИ РАБОТЫ ФУНКЦИЙ И МЕТОДОВ!
+"""
+
+
 from bs4 import BeautifulSoup
 from lxml import html 
 from urllib.request import urlopen 
@@ -30,10 +35,14 @@ def get_pages(html_obj, url) -> list[str]:
     return pages
 
 
-def get_product_urls(pages: list) -> list[str]:
-    product_urls = [] 
-    for page in self.pages:
-        pass
+def safe_get_str(bs: BeautifulSoup, code: str) -> str:
+    '''извлекает и возвращает строку из файла BeautifulSoup.
+    если данных по этому пути нет - возвращает пустую строку'''
+    try:
+        return eval(code).get_text()
+    except Exception:
+        return ''
+
 
 #########################################################################
 with open('perfumery.html') as file: 
