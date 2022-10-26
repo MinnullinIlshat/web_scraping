@@ -20,13 +20,14 @@ def get_bs(html_obj: str) -> BeautifulSoup:
         return None
 
 class Product: 
-    def __init__(self):
-        self.name = '' 
+    def __init__(self, url):
+        self.url = url
+        self.name = ''
         self.path = ''
         self.images = [] # ссылки на изображения
         self.description = '' # описание товара
         self.vendor_code = '' # артикул 
-        self.price = '' 
+        self.price = ''
         self.old_price = '' # старая цена, если она есть
 
 class Category:
