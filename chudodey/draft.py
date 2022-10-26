@@ -46,5 +46,4 @@ bs = get_bs(html_obj)
 
 for item in bs.find_all(class_="product__brief"):
     url = item.a.get('href').strip()
-    print('URL:  ', url)
-    print()
+    print(url)
